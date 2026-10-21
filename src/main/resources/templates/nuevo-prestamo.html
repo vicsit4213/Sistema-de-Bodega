@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Préstamo - Bodega Automotriz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #f4f6f9;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-banner {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        input[readonly] {
+            background-color: #e9ecef;
+        }
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+        .btn-cancel {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-banner">
+        Registrar Nuevo Préstamo
+    </div>
+
+    <form th:action="@{/prestamos/guardar}" method="post">
+        <!-- ID del Producto / Herramienta seleccionado -->
+        <div class="form-group">
+            <label for="idProducto">ID de la Herramienta / Producto:</label>
+            <input type="text" id="idProducto" name="idProducto" th:value="${idProducto}" readonly required />
+        </div>
+
+        <!-- Nombre del Solicitante -->
+        <div class="form-group">
+            <label for="nombreSolicitante">Nombre del Solicitante (Alumno / Docente):</label>
+            <input type="text" id="nombreSolicitante" name="nombreSolicitante" placeholder="Ej. Juan Pérez" required />
+        </div>
+
+        <!-- Fecha del préstamo -->
+        <div class="form-group">
+            <label for="fecha">Fecha de Salida:</label>
+            <input type="date" id="fecha" name="fecha" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required />
+        </div>
+
+        <!-- Observación inicial de la herramienta -->
+        <div class="form-group">
+            <label for="observacionEntrega">Observación / Estado de la Entrega:</label>
+            <textarea id="observacionEntrega" name="observacionEntrega" rows="3" placeholder="Ej. Entrega con estuche completo y limpio"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Confirmar y Registrar Préstamo</button>
+        <a th:href="@{/catalogo}" class="btn-cancel">Cancelar y volver al catálogo</a>
+    </form>
+</div>
+
+</body>
+</html>

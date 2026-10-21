@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Préstamos Activos - Inventario Bodega</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #f4f6f9;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-banner {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #003366;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: #002244;
+        }
+        .btn-success {
+            background-color: #28a745;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        h2 {
+            color: #003366;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+            font-size: 0.92rem;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .badge-prestado {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-banner">
+        Inventario de Bodega Mecánica Automotriz
+    </div>
+
+    <div class="nav-buttons">
+        <a th:href="@{/catalogo}" class="btn">Ir al Catálogo</a>
+        <a th:href="@{/prestamos/nuevo}" class="btn">Registrar Nuevo Préstamo</a>
+    </div>
+
+    <h2>Listado de Préstamos Activos</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID Préstamo</th>
+                <th>ID Producto</th>
+                <th>Solicitante</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Observación / Estado de Entrega</th>
+                <th>Acción / Devolución</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Si no hay préstamos activos -->
+            <tr th:if="${#lists.isEmpty(prestamos)}">
+                <td colspan="7" style="text-align: center; color: #6c757d;">No hay préstamos activos registrados en este momento.</td>
+            </tr>
+            
+            <!-- Iteración de préstamos activos desde la base de datos -->
+            <tr th:each="p : ${prestamos}">
+                <td th:text="${p.idPrestamo}">1</td>
+                <td th:text="${p.idProducto}">2</td>
+                <td th:text="${p.nombreSolicitante}">Juan Pérez</td>
+                <td th:text="${p.fecha}">25/05/2026</td>
+                <td><span class="badge-prestado">Prestado</span></td>
+                
+                <!-- Formulario para marcar como entregado y registrar observación -->
+                <td th:text="${p.observacionEntrega != null ? p.observacionEntrega : 'Sin observaciones'}">Observación</td>
+                <td>
+                    <form th:action="@{/prestamos/devolver/{id}(id=${p.idPrestamo})}" method="post">
+                        <input type="text" name="observacionDevolucion" placeholder="Ej. Buen estado / Mantenimiento" required />
+                        <button type="submit" class="btn btn-success">Marcar como Entregado</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

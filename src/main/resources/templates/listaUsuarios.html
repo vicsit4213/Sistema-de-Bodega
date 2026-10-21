@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Usuarios - Inventario</title>
+    <!-- Bootstrap CSS para mantener el mismo diseño -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-4">
+        <div class="card shadow p-4 bg-white">
+            <!-- Barra de título superior idéntica a la del catálogo -->
+            <div class="card text-white text-center py-3 mb-3" style="background-color: #0d6efd;">
+                <h2 class="m-0 font-weight-bold">Inventario de Bodega Mecánica Automotriz</h2>
+            </div>
+
+            <!-- Botón para regresar al catálogo -->
+            <div class="mb-4">
+                <a th:href="@{/catalogo}" class="btn btn-primary">Ver Catálogo / Menú Principal</a>
+            </div>
+
+            <!-- Contenido de la sección de usuarios -->
+            <h3 class="mb-3 text-dark">Usuarios Registrados en el Sistema</h3>
+            <p class="text-muted">Total de usuarios en la base de datos.</p>
+
+            <!-- Tabla de usuarios segura -->
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Correo / Usuario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Recorre la lista de usuarios enviada desde el controlador -->
+                        <tr th:if="${usuarios != null}" th:each="u : ${usuarios}">
+                            <td th:text="${u.id}"></td>
+                            <td th:text="${u.correo}"></td>
+                        </tr>
+                        <tr th:if="${usuarios == null or usuarios.empty}">
+                            <td colspan="2" class="text-center">No hay usuarios registrados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
